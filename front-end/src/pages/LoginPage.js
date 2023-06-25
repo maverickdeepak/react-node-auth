@@ -1,15 +1,24 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { useToken } from "../auth/useToken";
 
 const LoginPage = () => {
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
-  const [erroMessage, setErrorMessage] = useState('')
+  const [erroMessage, setErrorMessage] = useState('');
+  const [token, setToken] = useToken();
 
   const history = useHistory();
 
   const onLoginClicked = async () => {
-    alert("login button clicked");
+    const response = await axios.post('/api/login', {
+      email: emailValue,
+      password: passwordValue
+    });
+    const token = response.data.token;
+    setToken(token)
+    history.push('/')
   };
 
   return (
